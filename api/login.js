@@ -12,12 +12,6 @@ module.exports = async (req, res) => {
       });
     }
 
-    if(!process.env.MONGODB_URI){
-      return res.status(500).json({
-        message:"MONGODB_URI missing"
-      });
-    }
-
     const client =
     new MongoClient(process.env.MONGODB_URI);
 
@@ -39,6 +33,7 @@ module.exports = async (req, res) => {
 
     if(!user){
       return res.json({
+        success:false,
         message:"Account not found"
       });
     }
@@ -51,26 +46,33 @@ module.exports = async (req, res) => {
 
     if(!valid){
       return res.json({
+        success:false,
         message:"Wrong password"
       });
     }
 
+    // TOKEN
     const token = jwt.sign(
       {
-        id:user._id
+        id:user._id,
+        email:user.email
       },
-      "SECRET_KEY"
+      "SECRET_KEY",
+      {
+        expiresIn:"7d"
+      }
     );
 
     return res.json({
       success:true,
-      token,
+      token:token,
       message:"Login successful"
     });
 
   } catch(err){
 
     return res.status(500).json({
+      success:false,
       error:String(err)
     });
 
