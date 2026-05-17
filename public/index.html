@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Rocard Bank</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body{
+      background:#07111f;
+      overflow-x:hidden;
+      font-family:Arial,sans-serif;
+    }
+
+    .glass{
+      background:rgba(255,255,255,0.05);
+      backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .glow{
+      position:absolute;
+      width:500px;
+      height:500px;
+      background:rgba(0,255,255,0.08);
+      filter:blur(120px);
+      z-index:0;
+    }
+  </style>
+</head>
+
+<body class="text-white min-h-screen relative">
+
+  <!-- Background -->
+  <div class="glow top-[-200px] left-[-100px]"></div>
+  <div class="glow bottom-[-200px] right-[-100px]"></div>
+
+  <!-- Navbar -->
+  <nav class="flex justify-between items-center px-8 py-6 relative z-10">
+
+    <div class="flex items-center gap-3">
+
+      <div class="w-12 h-12 rounded-2xl bg-cyan-400 flex items-center justify-center text-black font-bold text-xl">
+        R
+      </div>
+
+      <div>
+        <h1 class="text-3xl font-bold text-cyan-400">
+          Rocard
+        </h1>
+
+        <p class="text-sm text-gray-400">
+          Digital Banking Platform
+        </p>
+      </div>
+
+    </div>
+
+    <div class="flex gap-4">
+
+      <button
+        onclick="showLogin()"
+        class="px-6 py-3 rounded-2xl glass hover:bg-white/10 transition"
+      >
+        Login
+      </button>
+
+      <button
+        onclick="showRegister()"
+        class="px-6 py-3 rounded-2xl bg-cyan-400 text-black font-bold hover:scale-105 transition"
+      >
+        Create Account
+      </button>
+
+    </div>
+
+  </nav>
+
+  <!-- Hero -->
+  <section class="relative z-10 px-8 mt-20">
+
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Left -->
+      <div>
+
+        <p class="text-cyan-400 uppercase tracking-[5px] mb-5">
+          Modern Banking Experience
+        </p>
+
+        <h2 class="text-6xl font-bold leading-tight">
+          Secure Digital
+          <span class="text-cyan-400">
+            Banking
+          </span>
+          For Everyone
+        </h2>
+
+        <p class="text-gray-400 text-xl mt-8 leading-9">
+          Rocard provides a modern platform for account management,
+          secure authentication, rewards, and task-based earning systems.
+        </p>
+
+        <div class="flex gap-5 mt-10 flex-wrap">
+
+          <button
+            onclick="showRegister()"
+            class="px-8 py-4 rounded-2xl bg-cyan-400 text-black font-bold hover:scale-105 transition"
+          >
+            Open Account
+          </button>
+
+          <button
+            onclick="showLogin()"
+            class="px-8 py-4 rounded-2xl border border-white/10 hover:bg-white/10 transition"
+          >
+            Login
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Right -->
+      <div class="flex justify-center">
+
+        <div class="glass rounded-[40px] p-8 w-[450px] shadow-2xl">
+
+          <div class="flex justify-between items-center">
+
+            <div>
+
+              <p class="text-gray-400 text-sm">
+                TOTAL BALANCE
+              </p>
+
+              <h2 class="text-5xl font-bold mt-3">
+                $0.00
+              </h2>
+
+            </div>
+
+            <div class="w-16 h-16 rounded-2xl bg-cyan-400 flex items-center justify-center text-black text-2xl">
+              💳
+            </div>
+
+          </div>
+
+          <div class="mt-10 space-y-5">
+
+            <div class="glass rounded-2xl p-5 flex justify-between items-center">
+
+              <div>
+                <h3 class="font-bold text-lg">
+                  Secure Authentication
+                </h3>
+
+                <p class="text-gray-400 text-sm mt-1">
+                  Protected account access
+                </p>
+              </div>
+
+              <div class="text-cyan-400 text-2xl">
+                🔒
+              </div>
+
+            </div>
+
+            <div class="glass rounded-2xl p-5 flex justify-between items-center">
+
+              <div>
+                <h3 class="font-bold text-lg">
+                  Fast Dashboard
+                </h3>
+
+                <p class="text-gray-400 text-sm mt-1">
+                  Modern user experience
+                </p>
+              </div>
+
+              <div class="text-cyan-400 text-2xl">
+                ⚡
+              </div>
+
+            </div>
+
+            <div class="glass rounded-2xl p-5 flex justify-between items-center">
+
+              <div>
+                <h3 class="font-bold text-lg">
+                  Rewards System
+                </h3>
+
+                <p class="text-gray-400 text-sm mt-1">
+                  Task and activity features
+                </p>
+              </div>
+
+              <div class="text-cyan-400 text-2xl">
+                💰
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Login/Register Modal -->
+  <div
+    id="authBox"
+    class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50"
+  >
+
+    <div class="glass p-10 rounded-[35px] w-[400px] relative">
+
+      <button
+        onclick="closeAuth()"
+        class="absolute top-5 right-5 text-gray-400 hover:text-white"
+      >
+        ✕
+      </button>
+
+      <h2
+        id="authTitle"
+        class="text-4xl font-bold text-cyan-400 mb-8 text-center"
+      >
+        Login
+      </h2>
+
+      <!-- LOGIN -->
+      <form id="loginForm" class="space-y-5">
+
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="Email"
+          class="w-full p-4 rounded-2xl bg-white/10 outline-none"
+        />
+
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Password"
+          class="w-full p-4 rounded-2xl bg-white/10 outline-none"
+        />
+
+        <button
+          type="submit"
+          class="w-full py-4 rounded-2xl bg-cyan-400 text-black font-bold"
+        >
+          Login
+        </button>
+
+      </form>
+
+      <!-- REGISTER -->
+      <form id="registerForm" class="space-y-5 hidden">
+
+        <input
+          id="registerUsername"
+          type="text"
+          placeholder="Username"
+          class="w-full p-4 rounded-2xl bg-white/10 outline-none"
+        />
+
+        <input
+          id="registerEmail"
+          type="email"
+          placeholder="Email"
+          class="w-full p-4 rounded-2xl bg-white/10 outline-none"
+        />
+
+        <input
+          id="registerPassword"
+          type="password"
+          placeholder="Password"
+          class="w-full p-4 rounded-2xl bg-white/10 outline-none"
+        />
+
+        <button
+          type="submit"
+          class="w-full py-4 rounded-2xl bg-cyan-400 text-black font-bold"
+        >
+          Create Account
+        </button>
+
+      </form>
+
+      <p id="message" class="text-center mt-5 text-gray-300"></p>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const authBox =
+    document.getElementById("authBox");
+
+    const loginForm =
+    document.getElementById("loginForm");
+
+    const registerForm =
+    document.getElementById("registerForm");
+
+    const authTitle =
+    document.getElementById("authTitle");
+
+    const message =
+    document.getElementById("message");
+
+    function showLogin(){
+      authBox.classList.remove("hidden");
+
+      loginForm.classList.remove("hidden");
+      registerForm.classList.add("hidden");
+
+      authTitle.innerText = "Login";
+    }
+
+    function showRegister(){
+      authBox.classList.remove("hidden");
+
+      registerForm.classList.remove("hidden");
+      loginForm.classList.add("hidden");
+
+      authTitle.innerText = "Create Account";
+    }
+
+    function closeAuth(){
+      authBox.classList.add("hidden");
+    }
+
+    // REGISTER
+    registerForm.addEventListener("submit", async (e) => {
+
+      e.preventDefault();
+
+      const username =
+      document.getElementById("registerUsername").value;
+
+      const email =
+      document.getElementById("registerEmail").value;
+
+      const password =
+      document.getElementById("registerPassword").value;
+
+      const req = await fetch("/api/register",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          username,
+          email,
+          password
+        })
+      });
+
+      const data = await req.json();
+
+      message.innerText = data.message;
+
+    });
+
+    // LOGIN
+    loginForm.addEventListener("submit", async (e) => {
+
+      e.preventDefault();
+
+      const email =
+      document.getElementById("loginEmail").value;
+
+      const password =
+      document.getElementById("loginPassword").value;
+
+      const req = await fetch("/api/login",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          email,
+          password
+        })
+      });
+
+      const data = await req.json();
+
+      message.innerText = data.message;
+
+      if(data.token){
+        localStorage.setItem("token",data.token);
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
