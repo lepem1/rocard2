@@ -26,7 +26,7 @@ if(req.method !== "POST"){
 
   await client.connect();
 
-  const db = client.db("restorex");
+  const db = client.db("lepem");
 
   const users =
   db.collection("users");
