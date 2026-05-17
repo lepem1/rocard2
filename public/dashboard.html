@@ -121,23 +121,23 @@
 
     </section>
 
-    <!-- WORK -->
+    <!-- LOA -->
     <section class="glass rounded-3xl p-6 mt-8">
 
       <div class="flex items-center gap-4">
 
         <div class="text-5xl">
-          📋
+          📝
         </div>
 
         <div>
 
           <h2 class="text-2xl font-bold">
-            Work Application
+            LOA Requests
           </h2>
 
           <p class="text-gray-400 mt-2">
-            Submit an application to start working and earning rewards.
+            Submit Leave Of Absence requests directly to management.
           </p>
 
         </div>
@@ -145,10 +145,10 @@
       </div>
 
       <button
-        onclick="openApplication()"
+        onclick="openLOA()"
         class="mt-6 w-full bg-cyan-400 text-black py-4 rounded-2xl font-bold"
       >
-        Start Working
+        Submit LOA
       </button>
 
     </section>
@@ -169,7 +169,7 @@
           </h2>
 
           <p class="text-gray-400 mt-2">
-            Manage your account settings and preferences.
+            Manage account preferences and local data.
           </p>
 
         </div>
@@ -234,37 +234,37 @@
 
   </main>
 
-  <!-- APPLICATION MODAL -->
+  <!-- LOA MODAL -->
   <div
-    id="applicationBox"
+    id="loaBox"
     class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-5"
   >
 
     <div class="glass rounded-[35px] p-8 w-full max-w-md">
 
       <h2 class="text-3xl font-bold text-cyan-400 mb-6">
-        Work Application
+        Submit LOA
       </h2>
 
-      <form id="applicationForm" class="space-y-5">
+      <form id="loaForm" class="space-y-5">
 
         <input
-          id="discord"
+          id="loaDiscord"
           type="text"
           placeholder="Discord Username"
           class="w-full p-4 rounded-2xl bg-white/10 outline-none"
         />
 
         <input
-          id="age"
+          id="loaDays"
           type="number"
-          placeholder="Age"
+          placeholder="How many days?"
           class="w-full p-4 rounded-2xl bg-white/10 outline-none"
         />
 
         <textarea
-          id="reason"
-          placeholder="Why do you want to work?"
+          id="loaReason"
+          placeholder="Reason for LOA"
           class="w-full p-4 rounded-2xl bg-white/10 outline-none h-32 resize-none"
         ></textarea>
 
@@ -272,13 +272,13 @@
           type="submit"
           class="w-full bg-cyan-400 text-black py-4 rounded-2xl font-bold"
         >
-          Submit Application
+          Submit LOA
         </button>
 
       </form>
 
       <button
-        onclick="closeApplication()"
+        onclick="closeLOA()"
         class="mt-4 w-full glass py-4 rounded-2xl"
       >
         Close
@@ -295,8 +295,8 @@
       Home
     </button>
 
-    <button onclick="openApplication()">
-      Work
+    <button onclick="openLOA()">
+      LOA
     </button>
 
     <button onclick="openWithdraw()">
@@ -408,39 +408,39 @@
 
     }
 
-    // APPLICATION
-    const applicationBox =
-    document.getElementById("applicationBox");
+    // LOA
+    const loaBox =
+    document.getElementById("loaBox");
 
-    function openApplication(){
+    function openLOA(){
 
-      applicationBox.classList.remove("hidden");
-
-    }
-
-    function closeApplication(){
-
-      applicationBox.classList.add("hidden");
+      loaBox.classList.remove("hidden");
 
     }
 
-    // WEBHOOK
+    function closeLOA(){
+
+      loaBox.classList.add("hidden");
+
+    }
+
+    // LOA SUBMIT
     document
-    .getElementById("applicationForm")
+    .getElementById("loaForm")
     .addEventListener("submit", async (e) => {
 
       e.preventDefault();
 
       const discord =
-      document.getElementById("discord").value;
+      document.getElementById("loaDiscord").value;
 
-      const age =
-      document.getElementById("age").value;
+      const days =
+      document.getElementById("loaDays").value;
 
       const reason =
-      document.getElementById("reason").value;
+      document.getElementById("loaReason").value;
 
-      // YOUR WEBHOOK
+      // DISCORD WEBHOOK
       const webhook =
       "https://discord.com/api/webhooks/1505639490096599210/NK_QjRpW7GXfhPDqJIzws3Qah54Yzu_iJIzzSlXgKWggvUQorxY6tqw6qsBk_hHxgoEl";
 
@@ -456,20 +456,20 @@
 
           embeds:[{
 
-            title:"New Rocard Application",
+            title:"New LOA Request",
 
             color:65535,
 
             fields:[
 
               {
-                name:"Discord",
+                name:"Discord Username",
                 value:discord
               },
 
               {
-                name:"Age",
-                value:age
+                name:"Days",
+                value:days
               },
 
               {
@@ -485,15 +485,15 @@
 
       });
 
-      closeApplication();
+      closeLOA();
 
       addActivity(
-        "Application Submitted",
-        "Your work application was sent"
+        "LOA Submitted",
+        "LOA request sent to management"
       );
 
       alert(
-        "Application submitted successfully"
+        "LOA submitted successfully"
       );
 
     });
