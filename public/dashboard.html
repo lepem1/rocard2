@@ -22,11 +22,24 @@
       border:1px solid rgba(255,255,255,0.08);
     }
 
+    .glow{
+      position:absolute;
+      width:500px;
+      height:500px;
+      background:rgba(0,255,255,0.08);
+      filter:blur(120px);
+      z-index:0;
+    }
+
   </style>
 
 </head>
 
-<body class="text-white min-h-screen pb-32">
+<body class="text-white min-h-screen pb-32 relative">
+
+  <!-- GLOW -->
+  <div class="glow top-[-200px] left-[-150px]"></div>
+  <div class="glow bottom-[-200px] right-[-150px]"></div>
 
   <!-- AUTH -->
   <script>
@@ -52,7 +65,7 @@
       </h1>
 
       <p class="text-gray-400 text-sm">
-        Mobile Banking Dashboard
+        Banking Dashboard
       </p>
 
     </div>
@@ -67,9 +80,9 @@
   </nav>
 
   <!-- MAIN -->
-  <main class="p-5">
+  <main class="p-5 relative z-10">
 
-    <!-- BALANCE CARD -->
+    <!-- BALANCE -->
     <section class="glass rounded-[35px] p-7 shadow-2xl">
 
       <div class="flex justify-between items-start">
@@ -77,12 +90,19 @@
         <div>
 
           <p class="text-gray-400">
-            Total Balance
+            TOTAL BALANCE
           </p>
 
-          <h2 class="text-5xl font-bold mt-3">
+          <h2
+            id="balance"
+            class="text-5xl font-bold mt-3"
+          >
             $0.00
           </h2>
+
+          <p class="text-gray-400 mt-3">
+            Earnings from completed work
+          </p>
 
         </div>
 
@@ -92,105 +112,101 @@
 
       </div>
 
-      <div class="grid grid-cols-2 gap-4 mt-8">
-
-        <button class="bg-cyan-400 text-black py-4 rounded-2xl font-bold">
-          Deposit
-        </button>
-
-        <button class="glass py-4 rounded-2xl font-bold">
-          Withdraw
-        </button>
-
-      </div>
+      <button
+        onclick="openWithdraw()"
+        class="mt-8 w-full bg-cyan-400 text-black py-4 rounded-2xl font-bold"
+      >
+        Withdraw Balance
+      </button>
 
     </section>
 
-    <!-- QUICK ACTIONS -->
-    <section class="mt-8">
+    <!-- WORK -->
+    <section class="glass rounded-3xl p-6 mt-8">
 
-      <h2 class="text-2xl font-bold mb-5">
-        Quick Actions
-      </h2>
+      <div class="flex items-center gap-4">
 
-      <div class="grid grid-cols-2 gap-5">
-
-        <div class="glass rounded-3xl p-6">
-
-          <div class="text-5xl">
-            📋
-          </div>
-
-          <h3 class="text-xl font-bold mt-4">
-            Tasks
-          </h3>
-
-          <p class="text-gray-400 mt-2 text-sm">
-            Complete activities
-          </p>
-
+        <div class="text-5xl">
+          📋
         </div>
 
-        <div class="glass rounded-3xl p-6">
+        <div>
 
-          <div class="text-5xl">
-            💰
-          </div>
+          <h2 class="text-2xl font-bold">
+            Work Application
+          </h2>
 
-          <h3 class="text-xl font-bold mt-4">
-            Rewards
-          </h3>
-
-          <p class="text-gray-400 mt-2 text-sm">
-            Claim bonuses
-          </p>
-
-        </div>
-
-        <div class="glass rounded-3xl p-6">
-
-          <div class="text-5xl">
-            ⚡
-          </div>
-
-          <h3 class="text-xl font-bold mt-4">
-            Fast Access
-          </h3>
-
-          <p class="text-gray-400 mt-2 text-sm">
-            Smooth performance
-          </p>
-
-        </div>
-
-        <div class="glass rounded-3xl p-6">
-
-          <div class="text-5xl">
-            🔒
-          </div>
-
-          <h3 class="text-xl font-bold mt-4">
-            Security
-          </h3>
-
-          <p class="text-gray-400 mt-2 text-sm">
-            Protected account
+          <p class="text-gray-400 mt-2">
+            Submit an application to start working and earning rewards.
           </p>
 
         </div>
 
       </div>
 
+      <button
+        onclick="openApplication()"
+        class="mt-6 w-full bg-cyan-400 text-black py-4 rounded-2xl font-bold"
+      >
+        Start Working
+      </button>
+
     </section>
 
-    <!-- TRANSACTIONS -->
+    <!-- SETTINGS -->
+    <section class="glass rounded-3xl p-6 mt-8">
+
+      <div class="flex items-center gap-4">
+
+        <div class="text-5xl">
+          ⚙️
+        </div>
+
+        <div>
+
+          <h2 class="text-2xl font-bold">
+            Settings
+          </h2>
+
+          <p class="text-gray-400 mt-2">
+            Manage your account settings and preferences.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 mt-6">
+
+        <button
+          onclick="changeUsername()"
+          class="glass p-4 rounded-2xl text-left"
+        >
+          Change Username
+        </button>
+
+        <button
+          onclick="clearData()"
+          class="glass p-4 rounded-2xl text-left"
+        >
+          Clear Local Data
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- ACTIVITY -->
     <section class="mt-8">
 
       <h2 class="text-2xl font-bold mb-5">
         Recent Activity
       </h2>
 
-      <div class="glass rounded-3xl p-5 space-y-5">
+      <div
+        id="activity"
+        class="glass rounded-3xl p-5 space-y-5"
+      >
 
         <div class="flex justify-between items-center">
 
@@ -218,22 +234,76 @@
 
   </main>
 
+  <!-- APPLICATION MODAL -->
+  <div
+    id="applicationBox"
+    class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-5"
+  >
+
+    <div class="glass rounded-[35px] p-8 w-full max-w-md">
+
+      <h2 class="text-3xl font-bold text-cyan-400 mb-6">
+        Work Application
+      </h2>
+
+      <form id="applicationForm" class="space-y-5">
+
+        <input
+          id="discord"
+          type="text"
+          placeholder="Discord Username"
+          class="w-full p-4 rounded-2xl bg-white/10 outline-none"
+        />
+
+        <input
+          id="age"
+          type="number"
+          placeholder="Age"
+          class="w-full p-4 rounded-2xl bg-white/10 outline-none"
+        />
+
+        <textarea
+          id="reason"
+          placeholder="Why do you want to work?"
+          class="w-full p-4 rounded-2xl bg-white/10 outline-none h-32 resize-none"
+        ></textarea>
+
+        <button
+          type="submit"
+          class="w-full bg-cyan-400 text-black py-4 rounded-2xl font-bold"
+        >
+          Submit Application
+        </button>
+
+      </form>
+
+      <button
+        onclick="closeApplication()"
+        class="mt-4 w-full glass py-4 rounded-2xl"
+      >
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
   <!-- MOBILE NAV -->
-  <div class="fixed bottom-0 left-0 w-full glass p-4 flex justify-around">
+  <div class="fixed bottom-0 left-0 w-full glass p-4 flex justify-around z-50">
 
     <button class="text-cyan-400 font-bold">
       Home
     </button>
 
-    <button>
-      Tasks
+    <button onclick="openApplication()">
+      Work
     </button>
 
-    <button>
-      Rewards
+    <button onclick="openWithdraw()">
+      Withdraw
     </button>
 
-    <button>
+    <button onclick="scrollTo(0,document.body.scrollHeight)">
       Settings
     </button>
 
@@ -241,6 +311,194 @@
 
   <script>
 
+    // BALANCE
+    let balance =
+    Number(localStorage.getItem("balance")) || 0;
+
+    const balanceText =
+    document.getElementById("balance");
+
+    function updateBalance(){
+
+      balanceText.innerText =
+      "$" + balance.toFixed(2);
+
+      localStorage.setItem(
+        "balance",
+        balance
+      );
+
+    }
+
+    updateBalance();
+
+    // ACTIVITY
+    function addActivity(title,desc){
+
+      const activity =
+      document.getElementById("activity");
+
+      const div =
+      document.createElement("div");
+
+      div.className =
+      "flex justify-between items-center";
+
+      div.innerHTML = `
+
+        <div>
+
+          <h3 class="font-bold">
+            ${title}
+          </h3>
+
+          <p class="text-gray-400 text-sm">
+            ${desc}
+          </p>
+
+        </div>
+
+        <span class="text-cyan-400">
+          Success
+        </span>
+
+      `;
+
+      activity.prepend(div);
+
+    }
+
+    // WITHDRAW
+    function openWithdraw(){
+
+      alert(
+        "To withdraw your balance, open a support ticket in the Rocard Discord server."
+      );
+
+    }
+
+    // SETTINGS
+    function changeUsername(){
+
+      const username =
+      prompt("Enter new username");
+
+      if(username){
+
+        localStorage.setItem(
+          "username",
+          username
+        );
+
+        alert("Username updated");
+
+      }
+
+    }
+
+    function clearData(){
+
+      if(confirm("Clear all local data?")){
+
+        localStorage.clear();
+
+        location.reload();
+
+      }
+
+    }
+
+    // APPLICATION
+    const applicationBox =
+    document.getElementById("applicationBox");
+
+    function openApplication(){
+
+      applicationBox.classList.remove("hidden");
+
+    }
+
+    function closeApplication(){
+
+      applicationBox.classList.add("hidden");
+
+    }
+
+    // WEBHOOK
+    document
+    .getElementById("applicationForm")
+    .addEventListener("submit", async (e) => {
+
+      e.preventDefault();
+
+      const discord =
+      document.getElementById("discord").value;
+
+      const age =
+      document.getElementById("age").value;
+
+      const reason =
+      document.getElementById("reason").value;
+
+      // YOUR WEBHOOK
+      const webhook =
+      "PASTE_DISCORD_WEBHOOK_HERE";
+
+      await fetch(webhook,{
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+          embeds:[{
+
+            title:"New Rocard Application",
+
+            color:65535,
+
+            fields:[
+
+              {
+                name:"Discord",
+                value:discord
+              },
+
+              {
+                name:"Age",
+                value:age
+              },
+
+              {
+                name:"Reason",
+                value:reason
+              }
+
+            ]
+
+          }]
+
+        })
+
+      });
+
+      closeApplication();
+
+      addActivity(
+        "Application Submitted",
+        "Your work application was sent"
+      );
+
+      alert(
+        "Application submitted successfully"
+      );
+
+    });
+
+    // LOGOUT
     function logout(){
 
       localStorage.removeItem("token");
