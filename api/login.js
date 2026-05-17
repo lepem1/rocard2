@@ -11,11 +11,17 @@ new MongoClient(process.env.MONGODB_URI);
 
 module.exports = async (req, res) => {
 
-  if(req.method !== "POST"){
-    return res.status(405).json({
-      message:"Method not allowed"
-    });
-  }
+if(req.method === "GET"){
+  return res.status(200).json({
+    status:"API Online"
+  });
+}
+
+if(req.method !== "POST"){
+  return res.status(405).json({
+    message:"Method not allowed"
+  });
+}
 
   const { email, password } = req.body;
 
