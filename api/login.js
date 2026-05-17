@@ -1,5 +1,6 @@
 const { MongoClient } = require("mongodb");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 module.exports = async (req, res) => {
 
@@ -29,33 +30,42 @@ module.exports = async (req, res) => {
     db.collection("users");
 
     const {
-      username,
       email,
       password
     } = req.body;
 
-    const exists =
+    const user =
     await users.findOne({ email });
 
-    if(exists){
+    if(!user){
       return res.json({
-        message:"Email already exists"
+        message:"Account not found"
       });
     }
 
-    const hashed =
-    await bcrypt.hash(password,10);
+    const valid =
+    await bcrypt.compare(
+      password,
+      user.password
+    );
 
-    await users.insertOne({
-      username,
-      email,
-      password:hashed,
-      createdAt:new Date()
-    });
+    if(!valid){
+      return res.json({
+        message:"Wrong password"
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        id:user._id
+      },
+      "SECRET_KEY"
+    );
 
     return res.json({
       success:true,
-      message:"Account created successfully"
+      token,
+      message:"Login successful"
     });
 
   } catch(err){
