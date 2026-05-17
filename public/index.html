@@ -302,110 +302,128 @@
 
   </div>
 
-  <script>
+ <script>
 
-    const authBox =
-    document.getElementById("authBox");
+  const authBox =
+  document.getElementById("authBox");
 
-    const loginForm =
-    document.getElementById("loginForm");
+  const loginForm =
+  document.getElementById("loginForm");
 
-    const registerForm =
-    document.getElementById("registerForm");
+  const registerForm =
+  document.getElementById("registerForm");
 
-    const authTitle =
-    document.getElementById("authTitle");
+  const authTitle =
+  document.getElementById("authTitle");
 
-    const message =
-    document.getElementById("message");
+  const message =
+  document.getElementById("message");
 
-    function showLogin(){
-      authBox.classList.remove("hidden");
+  function showLogin(){
+    authBox.classList.remove("hidden");
 
-      loginForm.classList.remove("hidden");
-      registerForm.classList.add("hidden");
+    loginForm.classList.remove("hidden");
+    registerForm.classList.add("hidden");
 
-      authTitle.innerText = "Login";
-    }
+    authTitle.innerText = "Login";
+  }
 
-    function showRegister(){
-      authBox.classList.remove("hidden");
+  function showRegister(){
+    authBox.classList.remove("hidden");
 
-      registerForm.classList.remove("hidden");
-      loginForm.classList.add("hidden");
+    registerForm.classList.remove("hidden");
+    loginForm.classList.add("hidden");
 
-      authTitle.innerText = "Create Account";
-    }
+    authTitle.innerText = "Create Account";
+  }
 
-    function closeAuth(){
-      authBox.classList.add("hidden");
-    }
+  function closeAuth(){
+    authBox.classList.add("hidden");
+  }
 
-    // REGISTER
-    registerForm.addEventListener("submit", async (e) => {
+  // REGISTER
+  registerForm.addEventListener("submit", async (e) => {
 
-      e.preventDefault();
+    e.preventDefault();
 
-      const username =
-      document.getElementById("registerUsername").value;
+    const username =
+    document.getElementById("registerUsername").value;
 
-      const email =
-      document.getElementById("registerEmail").value;
+    const email =
+    document.getElementById("registerEmail").value;
 
-      const password =
-      document.getElementById("registerPassword").value;
+    const password =
+    document.getElementById("registerPassword").value;
 
-      const req = await fetch("/api/register",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-          username,
-          email,
-          password
-        })
-      });
-
-      const data = await req.json();
-
-      message.innerText = data.message;
-
+    const req = await fetch("/api/register",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        username,
+        email,
+        password
+      })
     });
 
-    // LOGIN
-    loginForm.addEventListener("submit", async (e) => {
+    const data = await req.json();
 
-      e.preventDefault();
+    message.innerText = data.message;
 
-      const email =
-      document.getElementById("loginEmail").value;
+    if(data.success){
 
-      const password =
-      document.getElementById("loginPassword").value;
+      setTimeout(() => {
 
-      const req = await fetch("/api/login",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-          email,
-          password
-        })
-      });
+        window.location.href = "/dashboard.html";
 
-      const data = await req.json();
+      },1000);
 
-      message.innerText = data.message;
+    }
 
-      if(data.token){
-        localStorage.setItem("token",data.token);
-      }
+  });
 
+  // LOGIN
+  loginForm.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const email =
+    document.getElementById("loginEmail").value;
+
+    const password =
+    document.getElementById("loginPassword").value;
+
+    const req = await fetch("/api/login",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        email,
+        password
+      })
     });
 
-  </script>
+    const data = await req.json();
+
+    message.innerText = data.message;
+
+    if(data.token){
+
+      localStorage.setItem("token",data.token);
+
+      setTimeout(() => {
+
+        window.location.href = "/dashboard.html";
+
+      },1000);
+
+    }
+
+  });
+
+</script>
 
 </body>
 </html>
