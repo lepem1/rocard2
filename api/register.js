@@ -27,16 +27,18 @@ module.exports = async (req, res) => {
   }
 
   const hashed =
-  await bcrypt.hash(password, 10);
+  await bcrypt.hash(password,10);
 
   await users.insertOne({
     username,
     email,
-    password: hashed
+    password:hashed,
+    createdAt:new Date()
   });
 
   res.json({
-    message:"Account created"
+    success:true,
+    message:"Account created successfully"
   });
 
 };
