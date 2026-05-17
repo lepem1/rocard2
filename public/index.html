@@ -349,49 +349,56 @@
 
   }
 
-  // REGISTER
-  registerForm.addEventListener("submit", async (e) => {
+ // REGISTER
+registerForm.addEventListener("submit", async (e) => {
 
-    e.preventDefault();
+  e.preventDefault();
 
-    const username =
-    document.getElementById("registerUsername").value;
+  const username =
+  document.getElementById("registerUsername").value;
 
-    const email =
-    document.getElementById("registerEmail").value;
+  const email =
+  document.getElementById("registerEmail").value;
 
-    const password =
-    document.getElementById("registerPassword").value;
+  const password =
+  document.getElementById("registerPassword").value;
 
-    const req = await fetch("/api/register",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        username,
-        email,
-        password
-      })
-    });
-
-    const data = await req.json();
-
-    message.innerText = data.message;
-
-    console.log(data);
-
-    if(data.success){
-
-      setTimeout(() => {
-
-        window.location.href = "/dashboard.html";
-
-      },1000);
-
-    }
-
+  const req = await fetch("/api/register",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      username,
+      email,
+      password
+    })
   });
+
+  const data = await req.json();
+
+  console.log(data);
+
+  message.innerText = data.message;
+
+  // IMPORTANT
+  if(data.success && data.token){
+
+    localStorage.setItem(
+      "token",
+      data.token
+    );
+
+    setTimeout(() => {
+
+      window.location.href =
+      "/dashboard.html";
+
+    },1000);
+
+  }
+
+});
 
   // LOGIN
   loginForm.addEventListener("submit", async (e) => {
