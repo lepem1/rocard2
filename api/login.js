@@ -1,66 +1,69 @@
 const { MongoClient } = require("mongodb");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
-if (!process.env.MONGODB_URI) {
-  throw new Error("MONGODB_URI missing");
-}
-
-const client =
-new MongoClient(process.env.MONGODB_URI);
 
 module.exports = async (req, res) => {
 
-if(req.method === "GET"){
-  return res.status(200).json({
-    status:"API Online"
-  });
-}
+  try {
 
-if(req.method !== "POST"){
-  return res.status(405).json({
-    message:"Method not allowed"
-  });
-}
+    if(req.method === "GET"){
+      return res.status(200).json({
+        status:"API Online"
+      });
+    }
 
-  const { email, password } = req.body;
+    if(!process.env.MONGODB_URI){
+      return res.status(500).json({
+        message:"MONGODB_URI missing"
+      });
+    }
 
-  await client.connect();
+    const client =
+    new MongoClient(process.env.MONGODB_URI);
 
-  const db = client.db("lepem");
+    await client.connect();
 
-  const users =
-  db.collection("users");
+    const db =
+    client.db("restorex");
 
-  const user =
-  await users.findOne({ email });
+    const users =
+    db.collection("users");
 
-  if(!user){
-    return res.json({
-      message:"Account not found"
+    const {
+      username,
+      email,
+      password
+    } = req.body;
+
+    const exists =
+    await users.findOne({ email });
+
+    if(exists){
+      return res.json({
+        message:"Email already exists"
+      });
+    }
+
+    const hashed =
+    await bcrypt.hash(password,10);
+
+    await users.insertOne({
+      username,
+      email,
+      password:hashed,
+      createdAt:new Date()
     });
-  }
 
-  const valid =
-  await bcrypt.compare(password,user.password);
-
-  if(!valid){
     return res.json({
-      message:"Wrong password"
+      success:true,
+      message:"Account created successfully"
     });
+
+  } catch(err){
+
+    return res.status(500).json({
+      error:String(err)
+    });
+
   }
-
-  const token = jwt.sign(
-    {
-      id:user._id
-    },
-    "SECRET_KEY"
-  );
-
-  res.json({
-    success:true,
-    token,
-    message:"Login successful"
-  });
 
 };
