@@ -2,7 +2,12 @@ const { MongoClient } = require("mongodb");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const client = new MongoClient(process.env.MONGODB_URI);
+if (!process.env.MONGODB_URI) {
+  throw new Error("MONGODB_URI missing");
+}
+
+const client =
+new MongoClient(process.env.MONGODB_URI);
 
 module.exports = async (req, res) => {
 
@@ -16,8 +21,10 @@ module.exports = async (req, res) => {
 
   await client.connect();
 
-  const db = client.db("rocard");
-  const users = db.collection("users");
+  const db = client.db("restorex");
+
+  const users =
+  db.collection("users");
 
   const user =
   await users.findOne({ email });
@@ -29,7 +36,7 @@ module.exports = async (req, res) => {
   }
 
   const valid =
-  await bcrypt.compare(password, user.password);
+  await bcrypt.compare(password,user.password);
 
   if(!valid){
     return res.json({
@@ -45,6 +52,7 @@ module.exports = async (req, res) => {
   );
 
   res.json({
+    success:true,
     token,
     message:"Login successful"
   });
