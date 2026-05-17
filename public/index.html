@@ -302,7 +302,7 @@
 
   </div>
 
- <script>
+<script>
 
   const authBox =
   document.getElementById("authBox");
@@ -320,25 +320,33 @@
   document.getElementById("message");
 
   function showLogin(){
+
     authBox.classList.remove("hidden");
 
     loginForm.classList.remove("hidden");
+
     registerForm.classList.add("hidden");
 
     authTitle.innerText = "Login";
+
   }
 
   function showRegister(){
+
     authBox.classList.remove("hidden");
 
     registerForm.classList.remove("hidden");
+
     loginForm.classList.add("hidden");
 
     authTitle.innerText = "Create Account";
+
   }
 
   function closeAuth(){
+
     authBox.classList.add("hidden");
+
   }
 
   // REGISTER
@@ -371,11 +379,13 @@
 
     message.innerText = data.message;
 
+    console.log(data);
+
     if(data.success){
 
       setTimeout(() => {
 
-        window.location.href = "/dashboard.html";
+        window.location.href = "/dashboard";
 
       },1000);
 
@@ -407,15 +417,20 @@
 
     const data = await req.json();
 
+    console.log(data);
+
     message.innerText = data.message;
 
-    if(data.token){
+    if(data.success){
 
-      localStorage.setItem("token",data.token);
+      localStorage.setItem(
+        "token",
+        data.token
+      );
 
       setTimeout(() => {
 
-        window.location.href = "/dashboard.html";
+        window.location.href = "/dashboard";
 
       },1000);
 
