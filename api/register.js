@@ -62,11 +62,11 @@ module.exports = async (req, res) => {
     }
 
     // INSERT USER
-const result =
 await users.insertOne({
   username,
   email,
   password:password,
+  balance:0,
   createdAt:new Date()
 });
 
