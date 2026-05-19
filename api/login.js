@@ -1,5 +1,4 @@
 const { MongoClient } = require("mongodb");
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 module.exports = async (req, res) => {
@@ -61,13 +60,7 @@ module.exports = async (req, res) => {
     }
 
     // CHECK PASSWORD
-    const valid =
-    await bcrypt.compare(
-      password,
-      user.password
-    );
-
-    if(!valid){
+    if(password !== user.password){
 
       return res.json({
         success:false,
