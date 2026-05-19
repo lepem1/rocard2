@@ -61,18 +61,14 @@ module.exports = async (req, res) => {
 
     }
 
-    // HASH PASSWORD
-    const hashed =
-    await bcrypt.hash(password,10);
-
     // INSERT USER
-    const result =
-    await users.insertOne({
-      username,
-      email,
-      password:hashed,
-      createdAt:new Date()
-    });
+const result =
+await users.insertOne({
+  username,
+  email,
+  password:password,
+  createdAt:new Date()
+});
 
     // TOKEN
     const token = jwt.sign(
